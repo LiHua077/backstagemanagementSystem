@@ -1,0 +1,65 @@
+{
+  "id": "4011585",
+  "name": "侧边栏导航",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-sidemenu",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2727664",
+      "name": "网络管理",
+      "font_class": "wangguan",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    },
+    {
+      "icon_id": "3978376",
+      "name": "操作访问策略维护",
+      "font_class": "weihu",
+      "unicode": "e65f",
+      "unicode_decimal": 58975
+    },
+    {
+      "icon_id": "6941975",
+      "name": "展开",
+      "font_class": "caidan",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "23191150",
+      "name": "查看详情2",
+      "font_class": "shenji",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "1766324",
+      "name": "人物-团队",
+      "font_class": "tuandui",
+      "unicode": "e68c",
+      "unicode_decimal": 59020
+    },
+    {
+      "icon_id": "14015805",
+      "name": "-_系统日志",
+      "font_class": "kaifa",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "16534182",
+      "name": "日志管理",
+      "font_class": "xuqiu",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "34579031",
+      "name": "竞对协同管理",
+      "font_class": "guanli",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    }
+  ]
+}
