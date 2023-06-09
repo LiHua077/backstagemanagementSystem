@@ -1,17 +1,14 @@
 <template>
-    <div class="title">title</div>
+    <div class="title">  <userArea></userArea></div>
+  
 <div class="body">
-<ul class="sidemenu" >
-    <li @click="allMenus"><span class="iconfont icon-sidemenucaidan"></span><br>全部菜单</li> 
-    <li @click="require"><span class="iconfont icon-sidemenuxuqiu"></span><br>需求管理</li> 
-    <li><span class="iconfont icon-sidemenuweihu"></span><br>在线调试</li> 
-    <li><span class="iconfont icon-sidemenutuandui"></span><br>团队管理</li> 
-    <li><span class="iconfont icon-sidemenushenji"></span><br>审计日志</li> 
-    <li><span class="iconfont icon-sidemenuguanli"></span><br>开发管理</li> 
-    <li><span class="iconfont icon-sidemenukaifa"></span><br>快速开发</li> 
-    <li><span class="iconfont icon-sidemenuwangguan"></span><br>网关管理</li> 
+<ul class="sidemenu">
+    <li  v-for="items in menu" :key="items.id" >
+    <router-link :to="items.path">  <span :class="items.class"  ></span><br>{{items.title}}</router-link>
+     </li>
 </ul>
 <div class="content">
+
 <router-view>
     
 </router-view>
@@ -19,26 +16,76 @@
 </div> 
 </template>
 
-<script setup >
-import  { useRouter} from 'vue-router'
-const $router=useRouter()
-function require(){
-    $router.push({
-        path:'/admin/require'
-    })
-}
-function allMenus(){
-    $router.replace({
-        path:'/admin/allMenus',
-    })
-}
+<script  setup >
+import userArea from '../components/userArea.vue';
+const menu=[
+            {
+            id:1,
+            title:'全部菜单',
+            class:'iconfont icon-sidemenucaidan',
+            path:'/admin/allMenus',
+            },
+            {
+            id:2,
+            title:'需求管理',
+            class:'iconfont icon-sidemenuxuqiu',
+            path:'/admin/require'
+            },
+            {
+            id:3,
+            title:'在线调试',
+            class:'iconfont icon-sidemenuweihu',
+            path:'5'
+            },
+            {
+            id:4,    
+            title:'团队管理',
+            class:'iconfont icon-sidemenutuandui',
+            path:'6'
+            },
+            {
+            id:5,
+            title:'审计日志',
+            class:'iconfont icon-sidemenushenji',
+            path:'4'
+            },
+            {
+            id:6,
+            title:'开发管理',
+            class:'iconfont icon-sidemenuguanli',
+            path:'3'
+            },
+            {
+            id:7,
+            title:'快速开发',
+            class:'iconfont icon-sidemenukaifa',
+            path:'2'
+            },
+            {
+            id:8,
+            title:'网关管理',
+            class:'iconfont icon-sidemenuwangguan',
+            path:'1'
+            }]
 
 
 </script>
 
 <style scoped>
 @import url('../assets/iconfont.css');
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
+.router-link-active{
+  color: skyblue;
+}
+
+a:active {
+  color: skyblue;
+  text-decoration: none;
+}
 .sidemenu{
     position:relative;
     width: 15vh;
@@ -59,16 +106,14 @@ width: 20vh;
 li{
     list-style: none;
     text-align: center;
-    width: 20vh;
+    width: 15vh;
     padding: 10px 0 ;
     border-radius: 14px;
     font-size: 14px;
 }
-/*  文字居中加边距和图标间产生空隙*/
-/* .son:hover{
-    color: skyblue;
-} */
-/* 学js之前的，鼠标移动到的地方变蓝 */
+li:hover{
+    cursor: pointer;
+}
 .bgc{
     color: skyblue;
 }
@@ -77,16 +122,19 @@ li{
     justify-content: flex-start;
 }
 .content{
+    margin-top: 50px;
     width: 100%;
     height: 100vh;
-    background-color: skyblue;
+    background-color: rgba(230, 235, 241, 0.5);
+   
+   
 }
 .title{
     position:fixed;
     top: 0px;
     left: 15vh;
     width: 100%;
-    height: 50px;
+    height: 80px;
     background-color: #ccc;
 }
 </style>

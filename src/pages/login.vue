@@ -11,11 +11,12 @@
   </div> 
   </template>
   
-  <script setup>
+  <script  setup>
   import { computed } from '@vue/reactivity';
+  import { ref } from 'vue';
   import  { useRouter} from 'vue-router'
-  let name
-  let word
+  let name=ref('')
+  let word=ref('')
   let resultFeedback=computed(()=>{
   if(name){
      if(!word){
