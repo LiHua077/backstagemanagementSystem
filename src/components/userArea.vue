@@ -10,13 +10,18 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+
+import { reactive , ref ,computed} from 'vue';
 
 let user=reactive({
     head:'../../src/assets/1.jpg',
     name:'lihua'
 })
-let date=new Date()
+let date=ref(new Date().toString())
+// console.log(date)
+setInterval(()=>{
+    date.value=new Date()
+},1000)
 </script>
 
 <style scoped>

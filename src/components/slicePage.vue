@@ -1,11 +1,11 @@
 <template>
     <div class="slicePage">
-        <span class="total">共{{arr.length}}条</span>
+        <span class="total">共{{total}}条</span>
         <select name="" id="" v-model="size" class="check" >
             <!-- 双向绑定取size默认值为5 -->
             <option v-for="page in pageSize" :key="page"  :value="page" >{{page}}条/页</option>
         </select>
-         <button @click="currentPage>1?handelPage(currentPage-1):currentPage" class="updown">上一页</button>
+         <button @click="currentPage>1?handelPage(currentPage-1):currentPage" class="updown" >上一页</button>
          <button v-show="currentPage>3" @click="handelPage(1)">1</button>
          <button v-show="currentPage>4" @click="handelPage(currentPage-5)">...</button>
          <button v-show="currentPage>2" @click="handelPage(currentPage-2)" >{{currentPage-2}}</button>
@@ -16,23 +16,17 @@
          <button v-show="currentPage+3<allPage" @click="handelPage(currentPage+5)">...</button>
          <button v-show="currentPage+2<allPage" @click="handelPage(allPage)">{{allPage}}</button>
          <button @click="currentPage<allPage?handelPage(currentPage+1) : currentPage" class="updown">下一页</button>
+         <!-- 前往<input type="text" name="" id="" v-model="currentPage">页 -->
     </div>
 </template>
 
 <script  setup>
-import { reactive, ref, watch } from 'vue';
-let arr=reactive([])
-for(let i=1;i<100;i++){
-   arr.push(i)
-}
-let currentPage=ref(1)
-let pageSize=reactive([5,10,20,50])
-let size=ref(5)
-let allPage=ref(Math.ceil(arr.length/size.value))
-watch(size,(newValue)=>{
-    allPage.value=Math.ceil(arr.length/newValue)
-    handelPage(1)
-})
+import { inject, ref, watch } from 'vue';
+let total=inject('total')
+let currentPage=inject('currentPage')
+let pageSize=inject('pageSize')
+let size=inject('size')
+let allPage=ref(Math.ceil(total.value/size.value))
 function handelPage(e){
     if(e<=0){
         currentPage.value=1
@@ -43,9 +37,21 @@ function handelPage(e){
     else{
         currentPage.value=e
        }
-    console.log(arr,currentPage)//添加父组件回调
 }
-
+watch(size,(newValue)=>{
+    allPage.value=Math.ceil(total.value/newValue)
+    if(currentPage.value>allPage.value){
+    currentPage.value=allPage.value
+    console.log('&&**^&')
+}
+})
+watch(total,(newValue)=>{
+    allPage.value=Math.ceil(newValue/size.value)
+    if(currentPage.value>allPage.value){
+    currentPage.value=allPage.value
+    console.log('&&**^&')
+}
+})
 
 </script>
 

@@ -9,7 +9,7 @@
           </tr>
         </thead>
         <tbody>
-         <tr v-for="requirement in requirements" :key="requirement.id">
+         <tr v-for="requirement in arr.requirements" :key="requirement.id">
               <td>{{requirement.name}}</td>
               <td>{{requirement.date}}</td>
               <td>{{requirement.person}}</td>
@@ -22,11 +22,19 @@
       </table>
 </template>
 
-<script  setup>
-import { reactive } from 'vue';
+<script setup>
+import { inject, reactive, watch } from 'vue';
+let allRequireMents=inject('allRequireMents')
+function delStudent(id){
+  allRequireMents.allRequireMents=allRequireMents.allRequireMents.filter(requirement=>requirement.id !==id)
+}
 
-let requirements=reactive([{id:1,name:'lll',date:'2023.6.6',person:'lihua'}])
 
+
+
+// let arr=reactive({requirements:inject('requirement')})
+let arr=inject('requirement')
+// console.log(arr.requirements)
 </script>
 
 <style  scoped>

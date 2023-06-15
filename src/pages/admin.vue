@@ -12,12 +12,14 @@
 <router-view>
     
 </router-view>
+<!-- <subForm></subForm> -->
 </div>
 </div> 
 </template>
 
 <script  setup >
 import userArea from '../components/userArea.vue';
+// import subForm from '../components/subForm.vue';
 const menu=[
             {
             id:1,
@@ -87,7 +89,7 @@ a:active {
   text-decoration: none;
 }
 .sidemenu{
-    position:relative;
+    position:fixed;
     width: 15vh;
     height: 100vh;
     padding: 0;
@@ -122,7 +124,7 @@ li:hover{
     justify-content: flex-start;
 }
 .content{
-    margin-top: 50px;
+    margin-top: 80px;
     width: 100%;
     height: 100vh;
     background-color: rgba(230, 235, 241, 0.5);
