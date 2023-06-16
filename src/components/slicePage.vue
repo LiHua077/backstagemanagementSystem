@@ -16,12 +16,12 @@
          <button v-show="currentPage+3<allPage" @click="handelPage(currentPage+5)">...</button>
          <button v-show="currentPage+2<allPage" @click="handelPage(allPage)">{{allPage}}</button>
          <button @click="currentPage<allPage?handelPage(currentPage+1) : currentPage" class="updown">下一页</button>
-         <!-- 前往<input type="text" name="" id="" v-model="currentPage">页 -->
+         <!-- 前往<input type="text" name="" id="" v-model.lazy.number="jisuanshuxing">页 -->
     </div>
 </template>
 
 <script  setup>
-import { inject, ref, watch } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
 let total=inject('total')
 let currentPage=inject('currentPage')
 let pageSize=inject('pageSize')
@@ -52,6 +52,26 @@ watch(total,(newValue)=>{
     console.log('&&**^&')
 }
 })
+let jisuanshuxing=computed({
+    get(value){
+        if(value<=allPage){
+                currentPage.value=value
+               return currentPage.value
+              }else {
+                return currentPage.value
+              }
+    },
+    set(value){
+              if(value<=allPage){
+                currentPage.value=value
+               return currentPage.value
+              }else {
+                return currentPage.value
+              }
+    }
+})
+
+
 
 </script>
 

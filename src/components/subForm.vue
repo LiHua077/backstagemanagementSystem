@@ -1,20 +1,33 @@
 <template>
-    <div>
-        <div  class="form">
+        <div v-show="showState" class="form">
         <form class="info" autocomplete="off" @submit.prevent>    <!-- 禁止默认事件 -->
-          <p>任务名称：<input type="text" class="uname"   /></p> 
-            <p>性别：<select  class="gender"  >
-                  <option value="男">男</option>
-                  <option value="女">女</option>
-                </select></p><p>负责人：<input type="text" class="team"  /></p>
+            <p><span>任务名称：</span><input type="text" class="requirement" v-model="req.name"/></p> 
+            <p><span>截至日期：</span><input type="date" name="" id="" v-model="req.date"></p>
+            <p><span>负责人：</span><input type="text" class="person" v-model="req.person" /></p>
             <button v-if="!subState" @click="sub" >录入</button>
             <button v-if="subState"  @click="change">修改</button>
         </form>
   <div class="x" @click="closeInfo">X</div></div>
-    </div>
 </template>
-
 <script setup>
+import { inject, reactive } from 'vue';
+import {nanoid} from 'nanoid';
+let subState=inject('subState')
+let showState=inject('showState')
+function closeInfo(){
+  showState.value=false
+}
+let req=reactive({id:'',name:'',date:'',person:''})
+let temp=inject('temp')
+function sub(){
+  temp.trans.id=nanoid()
+  temp.trans.name=req.name
+  temp.trans.date=req.date
+  temp.trans.person=req.person
+  req.name=''
+  req.date=''
+  req.person=''
+}
 
 </script>
 
@@ -45,15 +58,24 @@
   margin: 50px auto;
   text-align: center;
 }
-.form .info input, .form .info select {
-  width: 80px;
+.form .info input{
+  width: 180px;
   height: 27px;
   outline: none;
+  margin-top: 3px ;
+  margin-right: 15px;
   border-radius: 5px;
   border: 1px solid #004085;
   padding-left: 5px;
   box-sizing: border-box;
-  margin-right: 15px;
+}
+.info span{
+  width: 100px;
+  height: auto;
+  display: inline-block;
+  text-align: justify;
+  text-align-last: justify;
+  text-justify: distribute-all-lines;
 }
 .form .info button {
   width: 140px;
@@ -64,5 +86,7 @@
   color: #fff;
   cursor: pointer;
   border-radius: 5px;
+  margin-top: 10px;
 }
+
 </style>

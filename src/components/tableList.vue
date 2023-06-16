@@ -15,7 +15,7 @@
               <td>{{requirement.person}}</td>
               <td>
               <button class="delete" @click="delStudent(requirement.id)"  >删除</button>
-              <button class="change" @click="changeINfo(requirement.id)"  >修改</button>
+              <button class="change" @click="changeInfo(requirement.id)"  >修改</button>
               </td>
           </tr>
         </tbody>
@@ -28,8 +28,7 @@ let allRequireMents=inject('allRequireMents')
 function delStudent(id){
   allRequireMents.allRequireMents=allRequireMents.allRequireMents.filter(requirement=>requirement.id !==id)
 }
-
-
+const changeInfo=inject('changeInfo')
 
 
 // let arr=reactive({requirements:inject('requirement')})

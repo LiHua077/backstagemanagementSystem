@@ -1,7 +1,7 @@
 <script setup>
 import { all } from 'axios';
 import { provide, reactive, ref, watch } from 'vue';
-
+import {nanoid} from 'nanoid'
 // import login from './components/login.vue';
 let data=reactive({allRequireMents:JSON.parse(localStorage.getItem('requirements')) ||[]})
 provide('allRequireMents',data)
@@ -30,15 +30,32 @@ watch(requirement.requirements,(newValue)=>{
   requirement.requirements=newValue
 })
 // for(let i=1;i<155;i++){
-//    data.allRequireMents.push({id:i,name:`${i}kkz`,date:'332',person:'lllli'})
+//    data.allRequireMents.push({id:nanoid(),name:`${i}kkz`,date:'332',person:'lllli'})
 // }
 let subState=ref(false) //提交和修改按钮显示隐藏状态
 provide('subState',subState)
 let showState=ref(false) //表单显示隐藏状态
 provide('showState',showState)
 
-let temp=reactive({})
+let temp=reactive({trans:{id:'',name:'',date:'',person:''}})
 provide('temp',temp)
+watch(temp,(newValue)=>{
+  
+     if(data.allRequireMents.filter(requirement=>requirement.id !==newValue.trans.id)){
+      data.allRequireMents.push(newValue.trans)
+     }
+     else{
+    
+    
+     }
+})
+function changeInfo(id){
+     subState.value=true
+     showState.value=true
+     temp.trans.id=id
+     console.log(temp)
+}
+provide('changeInfo',changeInfo)
 </script>
 
 <template>
