@@ -4,7 +4,7 @@
 <div class="body">
 <ul class="sidemenu">
     <li  v-for="items in menu" :key="items.id" >
-    <router-link :to="items.path">  <span :class="items.class"  ></span><br>{{items.title}}</router-link>
+    <router-link :to="items.path">  <span :class="items.class" ></span><br>{{items.title}}</router-link>
      </li>
 </ul>
 <div class="content">
@@ -18,6 +18,8 @@
 </template>
 
 <script  setup >
+import { useRouter } from 'vue-router';
+import { watch } from 'vue';
 import userArea from '../components/userArea.vue';
 // import subForm from '../components/subForm.vue';
 const menu=[

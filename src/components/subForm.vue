@@ -4,8 +4,8 @@
             <p><span>任务名称：</span><input type="text" class="requirement" v-model="req.name"/></p> 
             <p><span>截至日期：</span><input type="date" name="" id="" v-model="req.date"></p>
             <p><span>负责人：</span><input type="text" class="person" v-model="req.person" /></p>
-            <button v-if="!subState" @click="sub" >录入</button>
-            <button v-if="subState"  @click="change">修改</button>
+            <button v-if="!subState" @click.stop="sub" >录入</button>
+            <button v-if="subState"  @click.stop="change">修改</button>
         </form>
   <div class="x" @click="closeInfo">X</div></div>
 </template>
@@ -19,16 +19,34 @@ function closeInfo(){
 }
 let req=reactive({id:'',name:'',date:'',person:''})
 let temp=inject('temp')
+const subrun=inject('subrun')
 function sub(){
-  temp.trans.id=nanoid()
+ if (req.name==''||req.person==''||req.date=='') {
+  alert('内容不能为空')
+ }
+ else{ temp.trans.id=nanoid()
+  temp.trans.name=req.name
+  temp.trans.date=req.date
+  temp.trans.person=req.person
+  // console.log(req.id)
+  console.log(temp.trans.id)
+  req.name=''
+  req.date=''
+  req.person=''
+  req.id=''
+  subrun()}
+}
+const changerun=inject('changerun')
+function change(){
   temp.trans.name=req.name
   temp.trans.date=req.date
   temp.trans.person=req.person
   req.name=''
   req.date=''
   req.person=''
-}
+  changerun()
 
+}
 </script>
 
 <style  scoped>

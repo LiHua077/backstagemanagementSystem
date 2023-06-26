@@ -18,7 +18,6 @@ import slicePage from '../../components/slicePage.vue';
 import {  ref, reactive, watch, inject } from 'vue';
 import tableList from '../../components/tableList.vue';
 import subForm from '../../components/subForm.vue';
-let requireMents=reactive([])
 let personData=reactive([])
 
 function getData(){

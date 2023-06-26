@@ -1,11 +1,19 @@
 <template>
     <div class="userArea">
 <div class="date">{{date}}</div>
-<div class="title">lawidlawid</div>
-<div class="user">
+<div class="title">项目需求管理</div>
+<div class="useroption">
+   
+    <div class="user" >
     <img :src="user.head" alt="" class="userHead">
-    <span class="userName">{{user.name}}</span>
+    <span class="userName">{{user.name}}</span>  
 </div>
+<div class="options">
+    <span>个人中心</span>
+    <span>退出登录</span>
+</div>
+</div>
+
 </div>
 </template>
 
@@ -30,6 +38,11 @@ setInterval(()=>{
     justify-content: space-between;
     align-items: center;
 }
+.useroption{
+    width: 300px;
+    height: 80px;
+   
+}
 .user{  
     width: 165px;
     height: 80px;
@@ -45,5 +58,15 @@ setInterval(()=>{
 }
 .userName{
     padding-left: 7px;
+}
+
+.options{
+    display: none;
+    margin: 0 auto;
+    background-color: skyblue;
+
+}
+.user:hover ~ .options{
+  display: block;
 }
 </style>

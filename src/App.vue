@@ -39,16 +39,7 @@ provide('showState',showState)
 
 let temp=reactive({trans:{id:'',name:'',date:'',person:''}})
 provide('temp',temp)
-watch(temp,(newValue)=>{
-  
-     if(data.allRequireMents.filter(requirement=>requirement.id !==newValue.trans.id)){
-      data.allRequireMents.push(newValue.trans)
-     }
-     else{
-    
-    
-     }
-})
+
 function changeInfo(id){
      subState.value=true
      showState.value=true
@@ -56,6 +47,17 @@ function changeInfo(id){
      console.log(temp)
 }
 provide('changeInfo',changeInfo)
+function subrun(){
+     data.allRequireMents.push({id:temp.trans.id,name:temp.trans.name,date:temp.trans.date,person:temp.trans.person})
+}
+provide('subrun',subrun)
+
+function changerun(){
+     const a= data.allRequireMents.indexOf(data.allRequireMents.find(requirement=>requirement.id==temp.trans.id))
+     data.allRequireMents.splice(a,1,{id:temp.trans.id,name:temp.trans.name,date:temp.trans.date,person:temp.trans.person})
+     temp.trans.id=''
+}
+provide('changerun',changerun)
 </script>
 
 <template>

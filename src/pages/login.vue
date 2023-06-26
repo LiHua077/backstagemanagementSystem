@@ -1,11 +1,11 @@
 <template>
     <div class="bigForm"> 
-  <form class="form">
+  <form class="form" @submit.prevent>
     <div class="title">Welcome,<br><span>login to continue</span></div>
-    <div class="resultFeedback"><span>{{ resultFeedback }}</span></div>
-    <input type="text" placeholder="Username" name="text" class="input" v-model="Username" >
-    <input type="password" placeholder="Password" name="password" class="input" v-model="Password">
-    <div class="otherOption"><a href="#" class="function">Forget Password</a><a href="#" class="function">Signup</a></div>
+    <div class="resultFeedback"><span>{{ feedback }}</span></div>
+    <input type="text" placeholder="Username" name="text" class="input" v-model.lazy="Username">
+    <input type="password" placeholder="Password" name="password" class="input" v-model.lazy="Password">
+    <!-- <div class="otherOption"><a href="#" class="function">Forget Password</a><a href="#" class="function">Signup</a></div> -->
     <button class="button-confirm" @click="handleUser" >Let`s go →</button>
   </form>
   </div> 
@@ -13,26 +13,46 @@
   
   <script  setup>
   import { computed } from '@vue/reactivity';
-  import { ref } from 'vue';
+  import { reactive, ref ,watch} from 'vue';
   import  { useRouter} from 'vue-router'
-  let name=ref('')
-  let word=ref('')
-  let resultFeedback=computed(()=>{
-  if(name){
-     if(!word){
-      return '密码错误'
-     }
+  let user=reactive([{name:'lihua',word:'996007zz'},
+                     {name:'qingfeng',word:'080808'}])
+  let Username=ref('')
+  let Password=ref('')
+//用户名校验
+// let resultFeedback=computed(()=>{
+//  if ((Username.value !=='')) {
+//   if(user.user.find(item =>item.name===Username.value)){
+//     console.log(user.user.find(item =>item.name===Username.value).word)
+//   }
+//   else{
+// return '用户名不存在'
+//   }
+//  }
+watch(Username,(newValue)=>{
+  if(newValue!==''){
+    if(user.find(item => item.name===newValue)){
+      console.log(user.find(item => item.name===newValue).word)
+    }
+    else {
+      feedback.value='用户名不存在'
+    }
   }
-  else {
-    return '用户名错误'
-  }
-  })
+})
+  const feedback = ref('')
   const $router = useRouter()
   function handleUser(){
-    $router.push({
+   if(user.find(item =>item.name===Username.value).word===Password.value)
+{   
+  const token=new Date().getTime()
+    localStorage.setItem('token',JSON.stringify(token))
+  $router.push({
       path:"/admin",
-      
      })
+    }
+    else {
+      feedback.value='密码错误'
+    }
  }
 
   </script>
