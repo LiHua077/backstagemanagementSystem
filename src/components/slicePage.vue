@@ -3,7 +3,7 @@
         <span class="total">共{{total}}条</span>
         <select name="" id="" v-model="size" class="check" >
             <!-- 双向绑定取size默认值为5 -->
-            <option v-for="page in pageSize" :key="page"  :value="page" >{{page}}条/页</option>
+            <option v-for="page in props.pageSize" :key="page"  :value="page" >{{page}}条/页</option>
         </select>
          <button @click="currentPage>1?handelPage(currentPage-1):currentPage" class="updown" >上一页</button>
          <button v-show="currentPage>3" @click="handelPage(1)">1</button>
@@ -19,14 +19,20 @@
          <!-- 前往<input type="text" name="" id="" v-model.lazy.number="jisuanshuxing">页 -->
     </div>
 </template>
-
 <script  setup>
 import { computed, inject, ref, watch } from 'vue';
-let total=inject('total')
-let currentPage=inject('currentPage')
-let pageSize=inject('pageSize')
-let size=inject('size')
-let allPage=ref(Math.ceil(total.value/size.value))
+const props=defineProps({
+    size:Number,
+    pcurrentPage:Number,
+    pageSize:Array,
+    total:Number,
+    sizeChange:Function,
+    currentChange:Function
+})
+let currentPage=ref(1)
+let size=ref(props.pageSize[0])
+let allPage=ref(Math.ceil(props.total/props.size))
+
 function handelPage(e){
     if(e<=0){
         currentPage.value=1
@@ -37,48 +43,53 @@ function handelPage(e){
     else{
         currentPage.value=e
        }
+       props.currentChange(currentPage.value)
 }
 watch(size,(newValue)=>{
-    allPage.value=Math.ceil(total.value/newValue)
-    if(currentPage.value>allPage.value){
-    currentPage.value=allPage.value
+    allPage.value=Math.ceil(props.total/newValue)
+    if(currentPage>allPage.value){
+    currentPage=allPage.value
     console.log('&&**^&')
 }
+    props.sizeChange(newValue)
 })
-watch(total,(newValue)=>{
+
+watch(()=>props.total,(newValue)=>{
     allPage.value=Math.ceil(newValue/size.value)
-    if(currentPage.value>allPage.value){
-    currentPage.value=allPage.value
+    console.log(newValue)
+    console.log(size)
+    if(currentPage>allPage.value){
+    currentPage=allPage.value
     console.log('&&**^&')
-}
-})
-let jisuanshuxing=computed({
-    get(value){
-        if(value<=allPage){
-                currentPage.value=value
-               return currentPage.value
-              }else {
-                return currentPage.value
-              }
-    },
-    set(value){
-              if(value<=allPage){
-                currentPage.value=value
-               return currentPage.value
-              }else {
-                return currentPage.value
-              }
-    }
+}})
+watch(currentPage,(newValue)=>{
+      props.currentChange(newValue)
 })
 
 
-
+// let jisuanshuxing=computed({
+//     get(value){
+//         if(value<=allPage){
+//                 props.currentPage.value=value
+//                 return props.currentPage.value
+//               }else {
+//                 return props.currentPage.value
+//               }
+//     },
+//     set(value){
+//               if(value<=allPage){
+//                 props.currentPage.value=value
+//                return props.currentPage.value
+//               }else {
+//                 return props.currentPage.value
+//               }
+//     }
+// })
 </script>
 
 <style  scoped>
 .colorBlue{
     color: skyblue;
-    
 }
 .slicePage{
     margin-top: 20px;
@@ -114,5 +125,15 @@ button:active {
 }
 .check{
     margin-right: 10px;
+}
+
+.bgc{
+    width:400px;
+    height: 300px;
+  border-style: groove;
+   border-radius: 3px;
+   border-top: 1px;
+   border: black;
+   margin: 0 auto;
 }
 </style>
