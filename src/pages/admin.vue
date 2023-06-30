@@ -8,11 +8,8 @@
      </li>
 </ul>
 <div class="content">
-
 <router-view>
-    
 </router-view>
-<!-- <subForm></subForm> -->
 </div>
 </div> 
 </template>
@@ -128,7 +125,7 @@ li:hover{
 .content{
     margin-top: 80px;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background-color: rgba(230, 235, 241, 0.5);
    
    

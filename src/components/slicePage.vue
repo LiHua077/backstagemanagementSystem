@@ -5,17 +5,17 @@
             <!-- 双向绑定取size默认值为5 -->
             <option v-for="page in props.pageSize" :key="page"  :value="page" >{{page}}条/页</option>
         </select>
-         <button @click="currentPage>1?handelPage(currentPage-1):currentPage" class="updown" >上一页</button>
-         <button v-show="currentPage>3" @click="handelPage(1)">1</button>
-         <button v-show="currentPage>4" @click="handelPage(currentPage-5)">...</button>
-         <button v-show="currentPage>2" @click="handelPage(currentPage-2)" >{{currentPage-2}}</button>
-         <button v-show="currentPage>1" @click="handelPage(currentPage-1)">{{currentPage-1}}</button>
-         <button class="colorBlue" @click="handelPage(currentPage)">{{currentPage}}</button>
-         <button v-show="currentPage+1<=allPage" @click="handelPage(currentPage+1)">{{currentPage+1}}</button>
-         <button v-show="currentPage+2<=allPage" @click="handelPage(currentPage+2)">{{currentPage+2}}</button>
-         <button v-show="currentPage+3<allPage" @click="handelPage(currentPage+5)">...</button>
-         <button v-show="currentPage+2<allPage" @click="handelPage(allPage)">{{allPage}}</button>
-         <button @click="currentPage<allPage?handelPage(currentPage+1) : currentPage" class="updown">下一页</button>
+         <button @click="props.currentPage>1?handelPage(props.currentPage-1):props.currentPage" class="updown" >上一页</button>
+         <button v-show="current_Page>3" @click="handelPage(1)">1</button>
+         <button v-show="current_Page>4" @click="handelPage(current_Page-5)">...</button>
+         <button v-show="current_Page>2" @click="handelPage(current_Page-2)" >{{current_Page-2}}</button>
+         <button v-show="current_Page>1" @click="handelPage(current_Page-1)">{{current_Page-1}}</button>
+         <button class="colorBlue" @click="handelPage(current_Page)">{{current_Page}}</button>
+         <button v-show="current_Page+1<=allPage" @click="handelPage(current_Page+1)">{{current_Page+1}}</button>
+         <button v-show="current_Page+2<=allPage" @click="handelPage(current_Page+2)">{{current_Page+2}}</button>
+         <button v-show="current_Page+3<allPage" @click="handelPage(current_Page+5)">...</button>
+         <button v-show="current_Page+2<allPage" @click="handelPage(allPage)">{{allPage}}</button>
+         <button @click="props.currentPage<allPage?handelPage(props.currentPage+1) : props.currentPage" class="updown">下一页</button>
          <!-- 前往<input type="text" name="" id="" v-model.lazy.number="jisuanshuxing">页 -->
     </div>
 </template>
@@ -23,50 +23,67 @@
 import { computed, inject, ref, watch } from 'vue';
 const props=defineProps({
     size:Number,
-    pcurrentPage:Number,
+    currentPage:Number,
     pageSize:Array,
     total:Number,
     sizeChange:Function,
-    currentChange:Function
+    currentChange:Function,
 })
-let currentPage=ref(1)
-let size=ref(props.pageSize[0])
-let allPage=ref(Math.ceil(props.total/props.size))
+let current_Page
+if(props.currentPage){
+ current_Page=ref(props.currentPage)
+}
+else{
+     current_Page=ref(1)
+}
+let size
+if(props.size){
+    size=ref(props.size)
+}
+else if(props.pageSize){
+    size=ref(props.pageSize[0])
+}
+else{
+    size=ref(10)
+}
+let allPage=ref(Math.ceil(props.total/size.value))
 
 function handelPage(e){
     if(e<=0){
-        currentPage.value=1
+        props.currentChange(1)
+        current_Page.value=1
     }
    else if(e>=allPage.value){
-        currentPage.value=allPage.value
-       }
+    props.currentChange(allPage.value)
+     current_Page.value=allPage.value
+}
     else{
-        currentPage.value=e
+        current_Page.value=e
+        props.currentChange(e)
        }
-       props.currentChange(currentPage.value)
 }
 watch(size,(newValue)=>{
     allPage.value=Math.ceil(props.total/newValue)
-    if(currentPage>allPage.value){
-    currentPage=allPage.value
+    if(props.currentPage>allPage.value){
+    props.currentChange(allPage.value)
+    current_Page.value=allPage.value
     console.log('&&**^&')
 }
     props.sizeChange(newValue)
 })
-
 watch(()=>props.total,(newValue)=>{
     allPage.value=Math.ceil(newValue/size.value)
-    console.log(newValue)
-    console.log(size)
-    if(currentPage>allPage.value){
-    currentPage=allPage.value
+    if(props.currentPage>allPage.value){
+    props.currentChange(allPage.value)
+    current_Page.value=allPage.value
     console.log('&&**^&')
 }})
-watch(currentPage,(newValue)=>{
+watch(()=>props.currentPage,(newValue)=>{
       props.currentChange(newValue)
 })
-
-
+watch(current_Page,(newValue)=>{
+    handelPage(newValue)
+})
 // let jisuanshuxing=computed({
 //     get(value){
 //         if(value<=allPage){

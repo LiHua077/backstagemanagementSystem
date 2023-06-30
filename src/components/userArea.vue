@@ -41,15 +41,15 @@ setInterval(()=>{
 .useroption{
     width: 300px;
     height: 80px;
-   
+   display: flex;
+   justify-content: center;
 }
 .user{  
-    width: 165px;
-    height: 80px;
+    /* width: 100px;
+    height: 80px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
-
 }
 .userHead{
     width: 50px;
@@ -62,11 +62,15 @@ setInterval(()=>{
 
 .options{
     display: none;
-    margin: 0 auto;
+    /* display: flex; */
+    margin-right: 108px;
+    flex-direction: column;
+    justify-content: space-around;
     background-color: skyblue;
-
+    align-content:center;
 }
-.user:hover ~ .options{
-  display: block;
+
+.user :hover ~ .options{
+    display:block
 }
 </style>
