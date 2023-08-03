@@ -10,7 +10,7 @@
 </div>
 <div class="options">
     <span>个人中心</span>
-    <span>退出登录</span>
+    <span @click="exitLog">退出登录</span>
 </div>
 </div>
 
@@ -20,9 +20,10 @@
 <script setup>
 
 import { reactive , ref ,computed} from 'vue';
+import { useRouter } from 'vue-router';
 
 let user=reactive({
-    head:'../../src/assets/1.jpg',
+    head:'1.jpg',
     name:'lihua'
 })
 let date=ref(new Date().toString())
@@ -30,6 +31,14 @@ let date=ref(new Date().toString())
 setInterval(()=>{
     date.value=new Date()
 },1000)
+const $router = useRouter()
+function exitLog(){
+    $router.push({
+      path:"/login",
+     })
+     localStorage.removeItem('token')
+}
+
 </script>
 
 <style scoped>
@@ -61,16 +70,15 @@ setInterval(()=>{
 }
 
 .options{
-    display: none;
-    /* display: flex; */
+   
+    display: flex;
     margin-right: 108px;
     flex-direction: column;
     justify-content: space-around;
-    background-color: skyblue;
+    margin-left: 15px;
     align-content:center;
+    cursor: pointer;
 }
 
-.user :hover ~ .options{
-    display:block
-}
+
 </style>

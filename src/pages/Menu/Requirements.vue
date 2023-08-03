@@ -1,23 +1,29 @@
-<template>
+: <template>
     <h1>需求管理</h1>
+   
     <button @click="show">新增</button>
       <subForm></subForm>
-      <tableList></tableList>
+      <tableList 
+      
+      ></tableList>
       <slicePage 
-      :currentPage="currentPage"
-      :size="size"
+      v-model:currentPage="currentPage"
+      v-model:size="size"
       :sizeChange="handleSizeChange"
       :currentChange="handleCurrentChange"
       :pageSize="[5,10,20,50,100]"
       :total="data.allRequireMents.length"
       ></slicePage>
-     
-    <!-- <button @click="getData" class="ccccb">获取数据</button>
-    <tr v-for="person in personData" :key="person.id">
+    <button @click="getData" class="ccccb">获取数据</button>
+    <button @click="getData2"  class="ccccb">post</button>
+    <!-- <tr v-for="person in personData" :key="person.id">
     <td>{{person.login}}</td>
     <img :src="person.avatar_url"  >
     </tr> -->
   
+  <form class="filedata">
+  <input type="file" @change="handleFileUpload"/>
+</form>
 </template>
 
 <script setup>
@@ -27,23 +33,24 @@ import { provide, reactive, ref, watch } from 'vue';
 import tableList from '../../components/tableList.vue';
 import subForm from '../../components/subForm.vue';
 import {usepageOptions} from '../../stores/pageOptions'
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid'; 
+import axios from 'axios';
+
 const pageOptions=usepageOptions()
-let currentPage=ref(2)
+let currentPage=ref(1)
 let size=ref(10)
 let data=reactive({allRequireMents:JSON.parse(localStorage.getItem('requirements')) ||[]})
+
 provide('allRequireMents',data)
-let requirement=reactive({requirements:data.allRequireMents.slice(0,10)})
+let requirement=reactive({requirements:data.allRequireMents.slice((currentPage.value-1)*size.value,currentPage.value*size.value)})
 provide('requirement',requirement)
 let total=ref(data.allRequireMents.length)
 provide('total',total)
 const handleSizeChange = (val) => {
-   size.value=val
    requirement.requirements=data.allRequireMents.slice((currentPage.value-1)*val,currentPage.value*val)
 }
 const handleCurrentChange = (val) => {
 requirement.requirements=data.allRequireMents.slice((val-1)*size.value,val*size.value)
-currentPage.value=val
 }
 watch(data,(newValue)=>{
      localStorage.setItem('requirements',JSON.stringify(newValue.allRequireMents))
@@ -88,23 +95,30 @@ function changerun(){
 provide('changerun',changerun)
 
 
+function handleFileUpload(event){
+      const file = event.target.files[0]
+      const formData = new FormData()
+      formData.append('file', file)
+      axios.post('/api/v1/rec', formData).then(response => {
+        const imageUrl = response.data.imageUrl
+        console.log(response)
+        // do something with the image URL, such as displaying the image
+      })
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function getData(){
+  axios.get('http://localhost:8000/api1').then(response=>{
+    console.log(response.data)
+  })
+}
+function getData2(){
+  axios.post('http://localhost:8715/api/v1/rec',file1).then(res=>{
+    console.log(res)
+  }).catch(function (error) {
+    console.log(error);
+  });
+}
 // let personData=reactive([])
 // function getData(){
 //   // 发送get请求
@@ -124,6 +138,9 @@ provide('changerun',changerun)
 </script>
 
 <style scoped>
+.filedata{
+  margin-left: 300px;
+}
 .ccccb{
   margin-top: 20px;
 }

@@ -2,10 +2,10 @@
     <div class="slicePage">
         <span class="total">共{{total}}条</span>
         <select name="" id="" v-model="size" class="check" >
-            <!-- 双向绑定取size默认值为5 -->
+          
             <option v-for="page in props.pageSize" :key="page"  :value="page" >{{page}}条/页</option>
         </select>
-         <button @click="props.currentPage>1?handelPage(props.currentPage-1):props.currentPage" class="updown" >上一页</button>
+         <button @click="current_Page>1?handelPage(current_Page-1):current_Page" class="updown" >上一页</button>
          <button v-show="current_Page>3" @click="handelPage(1)">1</button>
          <button v-show="current_Page>4" @click="handelPage(current_Page-5)">...</button>
          <button v-show="current_Page>2" @click="handelPage(current_Page-2)" >{{current_Page-2}}</button>
@@ -15,9 +15,10 @@
          <button v-show="current_Page+2<=allPage" @click="handelPage(current_Page+2)">{{current_Page+2}}</button>
          <button v-show="current_Page+3<allPage" @click="handelPage(current_Page+5)">...</button>
          <button v-show="current_Page+2<allPage" @click="handelPage(allPage)">{{allPage}}</button>
-         <button @click="props.currentPage<allPage?handelPage(props.currentPage+1) : props.currentPage" class="updown">下一页</button>
-         <!-- 前往<input type="text" name="" id="" v-model.lazy.number="jisuanshuxing">页 -->
+         <button @click="current_Page<allPage?handelPage(current_Page+1) : current_Page" class="updown">下一页</button>
+        
     </div>
+    
 </template>
 <script  setup>
 import { computed, inject, ref, watch } from 'vue';
@@ -29,6 +30,9 @@ const props=defineProps({
     sizeChange:Function,
     currentChange:Function,
 })
+
+const emit = defineEmits(["update:currentPage",'update:size']);
+
 let current_Page
 if(props.currentPage){
  current_Page=ref(props.currentPage)
@@ -51,25 +55,30 @@ let allPage=ref(Math.ceil(props.total/size.value))
 function handelPage(e){
     if(e<=0){
         props.currentChange(1)
+        emit("update:currentPage",1)
         current_Page.value=1
     }
    else if(e>=allPage.value){
     props.currentChange(allPage.value)
      current_Page.value=allPage.value
+     emit("update:currentPage",allPage.value)
 }
     else{
         current_Page.value=e
         props.currentChange(e)
+        emit("update:currentPage",e)
        }
 }
 watch(size,(newValue)=>{
     allPage.value=Math.ceil(props.total/newValue)
-    if(props.currentPage>allPage.value){
+    if(current_Page.value>allPage.value){
     props.currentChange(allPage.value)
     current_Page.value=allPage.value
+    emit("update:currentPage",allPage.value)
     console.log('&&**^&')
 }
     props.sizeChange(newValue)
+    emit("update:size",newValue)
 })
 watch(()=>props.total,(newValue)=>{
     allPage.value=Math.ceil(newValue/size.value)
@@ -84,24 +93,7 @@ watch(()=>props.currentPage,(newValue)=>{
 watch(current_Page,(newValue)=>{
     handelPage(newValue)
 })
-// let jisuanshuxing=computed({
-//     get(value){
-//         if(value<=allPage){
-//                 props.currentPage.value=value
-//                 return props.currentPage.value
-//               }else {
-//                 return props.currentPage.value
-//               }
-//     },
-//     set(value){
-//               if(value<=allPage){
-//                 props.currentPage.value=value
-//                return props.currentPage.value
-//               }else {
-//                 return props.currentPage.value
-//               }
-//     }
-// })
+
 </script>
 
 <style  scoped>

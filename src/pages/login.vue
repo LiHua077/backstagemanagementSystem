@@ -9,40 +9,16 @@
     <button class="button-confirm" @click="handleUser" >Let`s go →</button>
   </form>
   </div> 
-  <div class="sum">
-    <p @click="counter.increment">{{counter.count}}</p>
-  </div>
   </template>
   
   <script  setup>
- import {useCounterStore} from '../stores/counter'
-
-  import { computed } from '@vue/reactivity';
   import { reactive, ref ,watch} from 'vue';
   import  { useRouter} from 'vue-router'
   let user=reactive([{name:'lihua',word:'996007zz'},
                      {name:'qingfeng',word:'080808'}])
   let Username=ref('')
   let Password=ref('')
-    const counter = useCounterStore()
-    // counter.count++
-    // 带自动补全 ✨
-    // counter.$patch({ count: counter.count + 1 })
-    // 或使用 action 代替
-    // counter.increment()
-
-
-//用户名校验
-// let resultFeedback=computed(()=>{
-//  if ((Username.value !=='')) {
-//   if(user.user.find(item =>item.name===Username.value)){
-//     console.log(user.user.find(item =>item.name===Username.value).word)
-//   }
-//   else{
-// return '用户名不存在'
-//   }
-//  }
-watch(Username,(newValue)=>{
+  watch(Username,(newValue)=>{
   if(newValue!==''){
     if(user.find(item => item.name===newValue)){
       console.log(user.find(item => item.name===newValue).word)
@@ -67,12 +43,9 @@ watch(Username,(newValue)=>{
       feedback.value='密码错误'
     }
  }
-
   </script>
-  
   <style  scoped>
-  
-  .bigForm{
+    .bigForm{
       width: 400px;
       margin: 50px auto;
   }
